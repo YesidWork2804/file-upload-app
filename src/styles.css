@@ -1,0 +1,18 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+app-root {
+  display: block;
+  text-align: center;
+  background-color: #f4f4f4;
+}
+
+h1 {
+  color: #333;
+}
+
+/* Puedes agregar más estilos globales según tus preferencias */
