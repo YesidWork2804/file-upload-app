@@ -3,20 +3,25 @@
   <input type="file" (change)="onFileSelected($event)" />
   <button (click)="uploadFile()">Subir Archivo</button>
 
+  <div *ngIf="uploadSuccessMessage" class="success-message">
+    {{ uploadSuccessMessage }}
+    <button (click)="clearUploadSuccessMessage()">Cerrar</button>
+  </div>
+
   <table *ngIf="fileList.length > 0">
     <thead>
       <tr>
         <th>Nombre del Archivo</th>
-        <!-- <th>Tipo de Archivo</th> -->
+        <th>Ruta del Archivo</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let file of fileList; let i = index">
         <td>{{ file.name }}</td>
-        <!-- <td>{{ file.type }}</td> -->
+        <td>{{ file.path }}</td>
         <td>
-          <button (click)="removeFile(i)">Eliminar</button>
+          <button (click)="removeFile(file.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>
