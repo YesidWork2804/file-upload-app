@@ -16,7 +16,7 @@ RUN npm run build --prod
 
 # Utiliza un servidor HTTP simple para servir la aplicación
 
-CMD ["npx", "http-server", "dist"]
+CMD ["npx", "http-server", "dist/file-upload-app","-p 4200"]
 # Expone el puerto en el que se ejecutará el servidor HTTP
 EXPOSE 4200
 
