@@ -71,6 +71,18 @@ export class FileUploadComponent implements OnInit {
         this.getFiles();
       });
   }
+
+
+  removeFileS3(name: string) {
+    this.http
+      .delete('http://localhost:3000/files/' + name)
+      .subscribe((response: any) => {
+        console.log('Archivo eliminado con éxito:', response);
+        this.getFiles();
+      });
+  }
+
+
   clearUploadSuccessMessage() {
     this.uploadSuccessMessage = null;
   }

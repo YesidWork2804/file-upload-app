@@ -21,7 +21,9 @@
         <td>{{ file.name }}</td>
         <td>{{ file.path }}</td>
         <td>
-          <button (click)="removeFile(file.id)">Eliminar</button>
+          <button (click)="removeFile(file.id); removeFileS3(file.name)">
+            Eliminar
+          </button>
         </td>
       </tr>
     </tbody>
