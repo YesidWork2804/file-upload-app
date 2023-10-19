@@ -1,22 +1,23 @@
-# Base image
-FROM node:18
+# Establece la imagen base de Node.js con la versión 18.17.1
+FROM node:18.17.1
 
-# Create app directory
-WORKDIR /usr/src/app
+# Establece el directorio de trabajo dentro de la imagen
+WORKDIR /app
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# Copia los archivos de la aplicación Angular
 COPY package*.json ./
-
-# Install app dependencies
-RUN npm install
-
-# Bundle app source
 COPY . .
 
-# Creates a "dist" folder with the production build
-RUN npm run build
+# Instala las dependencias
+RUN npm install
 
+# Compila la aplicación Angular para producción
+RUN npm run build --prod
+
+# Utiliza un servidor HTTP simple para servir la aplicación
+
+CMD ["npx", "http-server", "dist"]
+# Expone el puerto en el que se ejecutará el servidor HTTP
 EXPOSE 4200
 
-# Start the server using the production build
-CMD [ "node", "dist/main.js" ]
+
