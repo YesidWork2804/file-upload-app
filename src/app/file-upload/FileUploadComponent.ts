@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,6 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 // implements OnInit
 export class FileUploadComponent implements OnInit {
+  public urlBase =
+    'http://loadbalancer-1025959931.us-east-2.elb.amazonaws.com:3000';
+
+  public urlFiles = `${this.urlBase}/files`;
+  public urlUpload = `${this.urlBase}/upload`;
+
   selectedFile: File | null = null;
   fileList: fileInfo[] = [];
   constructor(private http: HttpClient) {}
@@ -28,7 +34,7 @@ export class FileUploadComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
 
-      this.http.post('http://localhost:3000/upload', formData).subscribe(
+      this.http.post(this.urlUpload, formData).subscribe(
         (response: any) => {
           console.log('Archivo subido con éxito:', response.filename);
           this.getFiles();
@@ -48,8 +54,14 @@ export class FileUploadComponent implements OnInit {
     }
   }
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Access-Control-Allow-Origin': 'http://localhost:4200', // Origin permitido
+    }),
+  };
+
   getFiles() {
-    this.http.get('http://localhost:3000/files').subscribe(
+    this.http.get(this.urlFiles).subscribe(
       (response: any) => {
         this.fileList = [];
         response.forEach((file: fileInfo) => {
@@ -64,24 +76,18 @@ export class FileUploadComponent implements OnInit {
   }
 
   removeFile(id: string) {
-    this.http
-      .delete('http://localhost:3000/files/' + id)
-      .subscribe((response: any) => {
-        console.log('Archivo eliminado con éxito:', response);
-        this.getFiles();
-      });
+    this.http.delete(this.urlFiles + id).subscribe((response: any) => {
+      console.log('Archivo eliminado con éxito:', response);
+      this.getFiles();
+    });
   }
-
 
   removeFileS3(name: string) {
-    this.http
-      .delete('http://localhost:3000/files/' + name)
-      .subscribe((response: any) => {
-        console.log('Archivo eliminado con éxito:', response);
-        this.getFiles();
-      });
+    this.http.delete(this.urlFiles + name).subscribe((response: any) => {
+      console.log('Archivo eliminado con éxito:', response);
+      this.getFiles();
+    });
   }
-
 
   clearUploadSuccessMessage() {
     this.uploadSuccessMessage = null;
